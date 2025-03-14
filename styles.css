@@ -1,0 +1,118 @@
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+body.dark {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.grid-container {
+    display: grid;
+    gap: 5px;
+    margin: 20px auto; /* Center horizontally */
+    width: fit-content; /* Adjust width to content */
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.light .cell {
+    border-color: #ccc;
+}
+
+body.dark .cell {
+    border-color: #666;
+}
+
+.header {
+    font-weight: bold;
+}
+
+body.light .header {
+    background-color: #f0f0f0;
+}
+
+body.dark .header {
+    background-color: #333;
+}
+
+.controls {
+    margin: 20px;
+    text-align: center; /* Center controls */
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.theme-switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.group-select {
+    margin-top: 10px;
+}
+
+.group-select label {
+    margin-right: 15px;
+}
+
+/* Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}

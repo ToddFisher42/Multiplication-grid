@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Times Table Grid</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="theme-switch">
+        <label class="switch">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="controls">
+        <div>
+            <h3>Select Numbers:</h3>
+            <div id="checkboxes"></div>
+            <div class="group-select">
+                <label><input type="checkbox" id="select1to10"> 1-10</label>
+                <label><input type="checkbox" id="selectAll"> Select All</label>
+            </div>
+        </div>
+        <div>
+            <h3>Timer (minutes):</h3>
+            <select id="timerSelect">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="custom">Custom</option>
+            </select>
+            <input type="number" id="customTime" placeholder="Custom minutes" style="display: none;">
+            <button onclick="startTimer()">Start Timer</button>
+            <span id="timerDisplay">00:00</span>
+        </div>
+        <button onclick="scrambleNumbers()">Scramble</button>
+        <button id="showAnswers" class="hidden" onclick="revealAnswers()">Show Answers</button>
+    </div>
+    
+    <div id="grid" class="grid-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

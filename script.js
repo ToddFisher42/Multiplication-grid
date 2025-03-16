@@ -75,30 +75,27 @@ function generateGrid() {
 function startTimer() {
     clearInterval(timerInterval);
     const select = document.getElementById('timerSelect');
-    let targetMinutes = parseInt(select.value);
+    let minutes = parseInt(select.value);
     
     if (select.value === 'custom') {
-        targetMinutes = parseInt(document.getElementById('customTime').value) || 5; // Default to 5 if invalid
+        minutes = parseInt(document.getElementById('customTime').value) || 5; // Default to 5 if invalid
     }
     
-    const targetTime = targetMinutes * 60;
-    let elapsedTime = 0;
+    let timeLeft = minutes * 60;
     answersVisible = false;
     generateGrid();
 
     timerInterval = setInterval(() => {
-        const mins = Math.floor(elapsedTime / 60);
-        const secs = elapsedTime % 60;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
         document.getElementById('timerDisplay').textContent = 
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         
-        if (elapsedTime >= targetTime) {
+        if (timeLeft <= 0) {
             clearInterval(timerInterval);
             document.getElementById('showAnswers').classList.remove('hidden');
-            const siren = document.getElementById('sirenSound');
-            siren.play();
         }
-        elapsedTime++;
+        timeLeft--;
     }, 1000);
 }
 

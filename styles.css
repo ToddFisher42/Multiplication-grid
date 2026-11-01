@@ -1,4 +1,13 @@
+:root {
+    /* Cells shrink on phones and grow on big screens / projectors */
+    --cell-size: clamp(36px, 6vw, 64px);
+    --cell-font: clamp(14px, 2.2vw, 24px);
+}
+
 body {
+    margin: 0;
+    padding: 0 16px 32px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -12,55 +21,30 @@ body.dark {
     color: #ffffff;
 }
 
-.grid-container {
-    display: grid;
-    gap: 5px;
-    margin: 20px auto; /* Center horizontally */
-    width: fit-content; /* Adjust width to content */
-}
-
-.cell {
-    width: 50px;
-    height: 50px;
-    border: 1px solid;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-body.light .cell {
-    border-color: #ccc;
-}
-
-body.dark .cell {
-    border-color: #666;
-}
-
-.header {
-    font-weight: bold;
-}
-
-body.light .header {
-    background-color: #f0f0f0;
-}
-
-body.dark .header {
-    background-color: #333;
+.page-header h1 {
+    text-align: center;
+    margin: 16px 60px 0; /* Leave room for the theme switch */
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
 }
 
 .controls {
-    margin: 20px;
-    text-align: center; /* Center controls */
+    margin: 20px auto;
+    max-width: 900px;
+    text-align: center;
 }
 
-.hidden {
-    visibility: hidden;
+.control-group {
+    margin-bottom: 16px;
 }
 
-.theme-switch {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.control-group h2 {
+    font-size: 1.1rem;
+    margin: 0 0 8px;
+}
+
+.checkboxes label {
+    display: inline-block;
+    margin: 4px 8px;
 }
 
 .group-select {
@@ -69,6 +53,161 @@ body.dark .header {
 
 .group-select label {
     margin-right: 15px;
+}
+
+.timer-buttons {
+    margin-top: 8px;
+}
+
+button,
+select,
+input[type="number"] {
+    font: inherit;
+    padding: 6px 12px;
+    margin: 4px;
+    border-radius: 6px;
+    border: 1px solid #888;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+input[type="number"] {
+    width: 6em;
+}
+
+body.dark button,
+body.dark select,
+body.dark input[type="number"] {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-color: #666;
+}
+
+.timer-display {
+    display: inline-block;
+    min-width: 4.5ch;
+    margin-left: 8px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    vertical-align: middle;
+}
+
+/* Status / "Time's up" message */
+.status {
+    min-height: 1.5em;
+    margin: 0 auto 8px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.status.alert {
+    color: #c62828;
+}
+
+body.dark .status.alert {
+    color: #ff8a80;
+}
+
+body.times-up .timer-display {
+    color: #c62828;
+    animation: flash 0.8s ease-in-out 4;
+}
+
+body.dark.times-up .timer-display {
+    color: #ff8a80;
+}
+
+@keyframes flash {
+    50% { opacity: 0.2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.times-up .timer-display {
+        animation: none;
+    }
+}
+
+/* Grid */
+.grid-container {
+    margin: 20px auto;
+    max-width: 100%;
+    overflow-x: auto; /* Large selections scroll instead of breaking the page */
+}
+
+.times-table {
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+.times-table th,
+.times-table td {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    min-width: var(--cell-size);
+    border: 1px solid;
+    text-align: center;
+    vertical-align: middle;
+    font-size: var(--cell-font);
+    padding: 0;
+}
+
+.times-table th {
+    font-weight: bold;
+}
+
+.times-table .corner {
+    border-color: transparent;
+    background: none;
+}
+
+body.light .times-table th,
+body.light .times-table td {
+    border-color: #ccc;
+}
+
+body.dark .times-table th,
+body.dark .times-table td {
+    border-color: #666;
+}
+
+body.light .times-table th:not(.corner) {
+    background-color: #f0f0f0;
+}
+
+body.dark .times-table th:not(.corner) {
+    background-color: #333;
+}
+
+.empty-hint {
+    text-align: center;
+    opacity: 0.7;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.theme-switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 /* Switch Styles */
@@ -115,4 +254,66 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(26px);
+}
+
+/* Keyboard users can see where focus is on the hidden switch input */
+.switch input:focus-visible + .slider {
+    outline: 3px solid #2196F3;
+    outline-offset: 2px;
+}
+
+/* Print: just the grid, black on white, sized to fit the page */
+@media print {
+    @page {
+        margin: 12mm;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    body,
+    body.dark {
+        background: #ffffff;
+        color: #000000;
+        padding: 0;
+    }
+
+    .grid-container {
+        overflow: visible;
+        margin: 0 auto;
+    }
+
+    .times-table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    .times-table {
+        /* Up to 14mm cells, shrinking so wide grids still fit across an A4/Letter page */
+        --print-cell: min(14mm, calc(180mm / var(--cols, 13)));
+    }
+
+    .times-table th,
+    .times-table td,
+    body.dark .times-table th,
+    body.dark .times-table td {
+        width: var(--print-cell);
+        height: var(--print-cell);
+        min-width: var(--print-cell);
+        font-size: min(14pt, calc(var(--print-cell) * 0.45));
+        border: 1px solid #000000;
+        color: #000000;
+    }
+
+    body.light .times-table th:not(.corner),
+    body.dark .times-table th:not(.corner) {
+        background-color: #e6e6e6;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .times-table .corner {
+        border: 1px solid #000000;
+    }
 }

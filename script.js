@@ -1,10 +1,12 @@
 const MAX_NUMBER = 15;
-const STORAGE_KEYS = { theme: 'ttg-theme', numbers: 'ttg-numbers', timer: 'ttg-timer' };
+const STORAGE_KEYS = { theme: 'ttg-theme', numbers: 'ttg-numbers', timer: 'ttg-timer', view: 'ttg-view' };
 
 let selectedNumbers = [];
 let rowOrder = [];
 let colOrder = [];
+let questionOrder = []; // [row, col] pairs shown in list view
 let answersVisible = false;
+let listView = false;
 
 let timerInterval = null;
 let remainingSeconds = 0;
@@ -85,12 +87,18 @@ function updateGrid() {
         .map(cb => parseInt(cb.value));
     rowOrder = [...selectedNumbers];
     colOrder = [...selectedNumbers];
+    questionOrder = buildQuestionOrder();
     saveSetting(STORAGE_KEYS.numbers, selectedNumbers.join(','));
     syncGroupCheckboxes();
     if (selectedNumbers.length > 0) {
         setStatus('');
     }
     generateGrid();
+}
+
+// Every row x column question, in the grid's current reading order
+function buildQuestionOrder() {
+    return rowOrder.flatMap(rowNum => colOrder.map(colNum => [rowNum, colNum]));
 }
 
 function generateGrid() {
@@ -105,6 +113,27 @@ function generateGrid() {
         return;
     }
 
+    grid.appendChild(listView ? buildList() : buildTable());
+}
+
+function buildList() {
+    const list = document.createElement('ol');
+    list.className = 'question-list';
+    list.setAttribute('aria-label', `Times table questions for ${selectedNumbers.join(', ')}`);
+
+    questionOrder.forEach(([rowNum, colNum]) => {
+        const item = document.createElement('li');
+        const answer = document.createElement('span');
+        answer.className = 'answer';
+        answer.textContent = answersVisible ? rowNum * colNum : '';
+        item.append(`${rowNum} × ${colNum} = `, answer);
+        list.appendChild(item);
+    });
+
+    return list;
+}
+
+function buildTable() {
     const table = document.createElement('table');
     table.className = 'times-table';
     // Column count (including the header column) lets the print styles fit the grid to the page
@@ -150,7 +179,16 @@ function generateGrid() {
     });
     table.appendChild(tbody);
 
-    grid.appendChild(table);
+    return table;
+}
+
+function setListView(enabled) {
+    listView = enabled;
+    const viewBtn = document.getElementById('viewToggleBtn');
+    viewBtn.textContent = enabled ? 'Grid View' : 'List View';
+    viewBtn.setAttribute('aria-pressed', String(enabled));
+    saveSetting(STORAGE_KEYS.view, enabled ? 'list' : 'grid');
+    generateGrid();
 }
 
 function setAnswersVisible(visible) {
@@ -171,9 +209,11 @@ function scrambleNumbers() {
         setStatus('Select some numbers first, then scramble.', true);
         return;
     }
-    // Rows and columns are shuffled independently
+    // Rows and columns are shuffled independently; the list gets a fully random question order
     shuffle(rowOrder);
     shuffle(colOrder);
+    questionOrder = buildQuestionOrder();
+    shuffle(questionOrder);
     generateGrid();
 }
 
@@ -353,6 +393,16 @@ function initActionButtons() {
     document.getElementById('toggleAnswersBtn').addEventListener('click', () => {
         setAnswersVisible(!answersVisible);
     });
+    document.getElementById('viewToggleBtn').addEventListener('click', () => {
+        setListView(!listView);
+    });
+}
+
+function initView() {
+    listView = loadSetting(STORAGE_KEYS.view) === 'list';
+    const viewBtn = document.getElementById('viewToggleBtn');
+    viewBtn.textContent = listView ? 'Grid View' : 'List View';
+    viewBtn.setAttribute('aria-pressed', String(listView));
 }
 
 // Initialize
@@ -360,4 +410,5 @@ initThemeToggle();
 initCheckboxes();
 initTimerControls();
 initActionButtons();
+initView();
 updateGrid();

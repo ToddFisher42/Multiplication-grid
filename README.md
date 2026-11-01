@@ -11,7 +11,8 @@ A simple, customisable multiplication grid for teachers. Pick which times tables
 - **Countdown timer** — 2 to 10 minutes, or a custom time (1–60 minutes). Pause, resume, and reset as needed.
 - **Time's up alert** — a beep plus a flashing on-screen message, and the answers are revealed automatically.
 - **Show / hide answers** at any time.
-- **Print-friendly** — printing (Ctrl/Cmd + P) hides the controls and prints just the grid, black on white. Print once with answers hidden for the worksheet and once with answers showing for the answer key.
+- **List view** — switch the grid to a numbered list of questions (`7 × 8 = ___`). Scramble mixes up the question order, and Show Answers fills them in.
+- **Print-friendly** — printing (Ctrl/Cmd + P) hides the controls and prints just the grid or list, black on white. The list prints in four columns. Print once with answers hidden for the worksheet and once with answers showing for the answer key.
 - **Light and dark themes** — defaults to your device's setting.
 - **Remembers your settings** — the selected numbers, timer length, and theme are saved in your browser.
 - **Works on any screen** — the grid scales from phones up to classroom projectors.

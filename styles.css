@@ -187,6 +187,36 @@ body.dark .times-table th:not(.corner) {
     background-color: #333;
 }
 
+/* List view: numbered questions flowing into as many columns as fit */
+.question-list {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0;
+    column-width: 11rem;
+    column-gap: 2rem;
+    font-size: var(--cell-font);
+    font-variant-numeric: tabular-nums;
+    text-align: left;
+}
+
+.question-list li {
+    margin: 0 0 0.6em 3em; /* Room for the question number */
+    break-inside: avoid;
+}
+
+.question-list li::marker {
+    font-size: 0.75em;
+    opacity: 0.7;
+}
+
+.question-list .answer {
+    display: inline-block;
+    min-width: 3ch;
+    padding: 0 0.25em;
+    border-bottom: 1px solid currentColor;
+    text-align: center;
+}
+
 .empty-hint {
     text-align: center;
     opacity: 0.7;
@@ -315,5 +345,25 @@ input:checked + .slider:before {
 
     .times-table .corner {
         border: 1px solid #000000;
+    }
+
+    .question-list {
+        max-width: none;
+        columns: 4;
+        column-gap: 8mm;
+        font-size: 12pt;
+        color: #000000;
+    }
+
+    .question-list li {
+        margin: 0 0 3mm 2.5em;
+    }
+
+    .question-list li::marker {
+        opacity: 1;
+    }
+
+    .question-list .answer {
+        min-width: 10mm;
     }
 }

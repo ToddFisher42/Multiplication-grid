@@ -289,14 +289,19 @@ input:checked + .slider:before {
         border-spacing: 0;
     }
 
+    .times-table {
+        /* Up to 14mm cells, shrinking so wide grids still fit across an A4/Letter page */
+        --print-cell: min(14mm, calc(180mm / var(--cols, 13)));
+    }
+
     .times-table th,
     .times-table td,
     body.dark .times-table th,
     body.dark .times-table td {
-        width: 14mm;
-        height: 14mm;
-        min-width: 14mm;
-        font-size: 14pt;
+        width: var(--print-cell);
+        height: var(--print-cell);
+        min-width: var(--print-cell);
+        font-size: min(14pt, calc(var(--print-cell) * 0.45));
         border: 1px solid #000000;
         color: #000000;
     }

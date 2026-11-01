@@ -1,4 +1,4 @@
-const MAX_NUMBER = 12;
+const MAX_NUMBER = 15;
 const STORAGE_KEYS = { theme: 'ttg-theme', numbers: 'ttg-numbers', timer: 'ttg-timer' };
 
 let selectedNumbers = [];
@@ -50,16 +50,15 @@ function initCheckboxes() {
         container.appendChild(label);
     }
 
-    document.getElementById('select1to10').addEventListener('change', (e) => {
-        getNumberCheckboxes().forEach(cb => {
-            cb.checked = e.target.checked && parseInt(cb.value) <= 10;
+    // Range shortcuts (1-10, 1-12, Select All) tick every number up to their data-max
+    document.querySelectorAll('.range-select').forEach(rangeBox => {
+        rangeBox.addEventListener('change', (e) => {
+            const max = parseInt(e.target.dataset.max);
+            getNumberCheckboxes().forEach(cb => {
+                cb.checked = e.target.checked && parseInt(cb.value) <= max;
+            });
+            updateGrid();
         });
-        updateGrid();
-    });
-
-    document.getElementById('selectAll').addEventListener('change', (e) => {
-        getNumberCheckboxes().forEach(cb => cb.checked = e.target.checked);
-        updateGrid();
     });
 
     // Restore the last selection
@@ -72,11 +71,12 @@ function initCheckboxes() {
     }
 }
 
-// Keep the "1-10" and "Select All" boxes in step with the individual numbers
+// Keep each range shortcut ticked only while the selection is exactly 1 to its max
 function syncGroupCheckboxes() {
-    const isOneToTen = selectedNumbers.length === 10 && selectedNumbers.every(n => n <= 10);
-    document.getElementById('select1to10').checked = isOneToTen;
-    document.getElementById('selectAll').checked = selectedNumbers.length === MAX_NUMBER;
+    document.querySelectorAll('.range-select').forEach(rangeBox => {
+        const max = parseInt(rangeBox.dataset.max);
+        rangeBox.checked = selectedNumbers.length === max && selectedNumbers.every(n => n <= max);
+    });
 }
 
 function updateGrid() {
@@ -107,6 +107,8 @@ function generateGrid() {
 
     const table = document.createElement('table');
     table.className = 'times-table';
+    // Column count (including the header column) lets the print styles fit the grid to the page
+    table.style.setProperty('--cols', colOrder.length + 1);
 
     const caption = document.createElement('caption');
     caption.className = 'visually-hidden';

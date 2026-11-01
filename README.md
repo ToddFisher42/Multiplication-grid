@@ -6,7 +6,7 @@ A simple, customisable multiplication grid for teachers. Pick which times tables
 
 ## Features
 
-- **Choose the tables** — tick any numbers from 1 to 12, or use the *1–10* / *Select All* shortcuts.
+- **Choose the tables** — tick any numbers from 1 to 15, or use the *1–10*, *1–12* and *Select All* shortcuts.
 - **Scramble** — shuffles the row and column headers independently, so students can't just count up.
 - **Countdown timer** — 2 to 10 minutes, or a custom time (1–60 minutes). Pause, resume, and reset as needed.
 - **Time's up alert** — a beep plus a flashing on-screen message, and the answers are revealed automatically.
